@@ -23,7 +23,15 @@
           :rules="[{ required: true, message: '请填写密码', pattern: /^\d{6}$/ }]"
         />
         <div style="margin: 16px;">
-          <van-button round block type="info" native-type="submit">登录</van-button>
+          <van-button
+            :disabled="isLoading"
+            :loading="isLoading"
+            round
+            block
+            type="info"
+            native-type="submit"
+            loading-text="加载中..."
+          >登录</van-button>
         </div>
       </van-form>
     </div>
@@ -32,6 +40,8 @@
 
 <script>
 import { loginAPI } from '@/api'
+import { Notify } from 'vant'
+import { setToken } from '@/utils/token'
 export default {
   name: 'Login',
   data () {
@@ -39,14 +49,26 @@ export default {
       user: {
         mobile: '13795433120',
         code: '246810'
-      }
+      },
+      isLoading: false
     }
   },
   methods: {
     async onSubmit (values) {
       console.log('submit', values)
-      const res = await loginAPI(this.user)
-      console.log(res)
+      this.isLoading = true
+      try {
+        const res = await loginAPI(this.user)
+        console.log(res)
+        setToken(res.data.data.token)
+        Notify({ type: 'success', message: '登录成功' })
+        this.$router.push({
+          name: 'Home'
+        })
+      } catch (error) {
+        Notify({ type: 'danger', message: '账号或密码错误' })
+      }
+      this.isLoading = false
     }
   }
 
