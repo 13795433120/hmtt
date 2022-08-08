@@ -24,3 +24,25 @@ export const getArticleListAPI = ({ channel_id, timestamp }) => request({
     timestamp
   }
 })
+export const dislikeArticleAPI = (id) => request({
+  url: '/v1_0/article/dislikes',
+  method: 'POST',
+  data: {
+    target: id
+  },
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
+})
+export const reportArticleAPI = (id, type, content) => request({
+  url: '/v1_0/article/reports',
+  method: 'POST',
+  data: {
+    target: id,
+    type: type,
+    remark: content
+  },
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
+})

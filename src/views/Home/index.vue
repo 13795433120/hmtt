@@ -11,13 +11,14 @@
       </van-nav-bar>
     </div>
     <div class="main">
-      <van-tabs v-model="active" sticky animated offset-top="46px">
+      <van-tabs v-model="activeId" sticky animated offset-top="1.226667rem">
         <van-tab
           v-for = "item in userChannelList"
           :key="item.id"
           :title="item.name"
+          :name="item.id"
         >
-          <ArticleList :list="articleList"></ArticleList>
+          <ArticleList :channelId="activeId"></ArticleList>
         </van-tab>
       </van-tabs>
     </div>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import { getUserChannelsAPI, getArticleListAPI } from '@/api'
+import { getUserChannelsAPI } from '@/api'
 import ArticleList from './components/ArticleList.vue'
 export default {
   name: 'Home',
@@ -34,21 +35,14 @@ export default {
   },
   data () {
     return {
-      active: 2,
-      userChannelList: [],
-      articleList: []
+      activeId: 0,
+      userChannelList: []
     }
   },
   async created () {
     const res = await getUserChannelsAPI()
     console.log(res)
     this.userChannelList = res.data.data.channels
-    const res2 = await getArticleListAPI({
-      channel_id: 0,
-      timestamp: (new Date()).getTime()
-    })
-    console.log(res2)
-    this.articleList = res2.data.data.results
   }
 }
 </script>
