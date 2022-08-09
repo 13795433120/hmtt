@@ -4,6 +4,7 @@ import Login from '@/views/Login'
 import Layout from '@/views/Layout'
 import Home from '@/views/Home'
 import User from '@/views/User'
+import Search from '@/views/Search'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
         name: 'User'
       }
     ]
+  },
+  {
+    path: '/search',
+    component: Search,
+    name: 'Search'
   }
 ]
 
