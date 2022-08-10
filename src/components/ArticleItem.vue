@@ -24,7 +24,7 @@
             <span>{{changeDate(artItem.pubdate)}}</span>
           </div>
           <!-- 反馈按钮 -->
-          <van-icon name="cross" @click="show = true"/>
+          <van-icon name="cross" @click.stop="show = true" v-if="reportShown"/>
         </div>
       </template>
     </van-cell>
@@ -48,6 +48,10 @@ export default {
   props: {
     artItem: {
       type: Object
+    },
+    reportShown: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

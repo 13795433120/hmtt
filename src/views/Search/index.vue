@@ -11,14 +11,37 @@
         background="#007BFF"
         shape="round"
         @input="getSuggestion"
+        @search="acticleSearch"
          />
     </div>
-    <div class="sugg-list">
-      <div
-        v-for="(item,index) in suggestionList"
-        :key="index"
-      class="sugg-item"
-      v-html="change(item,kw)">
+    <div>
+      <div class="sugg-list" v-if="kw.length !== 0">
+        <div
+          v-for="(item,index) in suggestionList"
+          :key="index"
+          class="sugg-item"
+          v-html="change(item,kw)"
+          @click="acticleSuggestPick(item)">
+        </div>
+      </div>
+      <div class="search-history" v-else>
+      <!-- 标题 -->
+        <van-cell title="搜索历史">
+          <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+          <template #right-icon>
+            <van-icon name="delete" class="search-icon" />
+          </template>
+        </van-cell>
+
+        <!-- 历史列表 -->
+        <div class="history-list">
+          <span
+            v-for="(item,index) in history"
+            :key="index"
+            class="history-item"
+            @click="$router.push(`/search/${item}`)"
+          >{{item}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -31,7 +54,8 @@ export default {
     return {
       kw: '', // 搜索关键字
       timer: null,
-      suggestionList: []
+      suggestionList: [],
+      history: JSON.parse(localStorage.getItem('history')) || []
     }
   },
   methods: {
@@ -47,6 +71,20 @@ export default {
     },
     change (content, target) {
       return content.replace(target, `<span style="color:red">${target}</span>`)
+    },
+    acticleSearch () {
+      this.history.push(this.kw)
+      const newSet = new Set(this.history)
+      const newArr = Array.from(newSet)
+      localStorage.setItem('history', JSON.stringify(newArr))
+      this.$router.push(`/search/${this.kw}`)
+    },
+    acticleSuggestPick (str) {
+      this.history.push(str)
+      const newSet = new Set(this.history)
+      const newArr = Array.from(newSet)
+      localStorage.setItem('history', JSON.stringify(newArr))
+      this.$router.push(`/search/${this.kw}`)
     }
   }
 }
@@ -77,6 +115,22 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+  }
+  .search-icon {
+    font-size: 16px;
+    line-height: inherit;
+  }
+
+  .history-list {
+    padding: 0 10px;
+    .history-item {
+      display: inline-block;
+      font-size: 12px;
+      padding: 8px 14px;
+      background-color: #efefef;
+      margin: 10px 8px 0px 8px;
+      border-radius: 10px;
     }
   }
 </style>

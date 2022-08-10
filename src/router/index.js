@@ -5,6 +5,8 @@ import Layout from '@/views/Layout'
 import Home from '@/views/Home'
 import User from '@/views/User'
 import Search from '@/views/Search'
+import SearchResult from '@/views/Search/SearchResult'
+import ArticleDetail from '@/views/ArticleDetail'
 
 Vue.use(VueRouter)
 
@@ -39,7 +41,18 @@ const routes = [
     path: '/search',
     component: Search,
     name: 'Search'
+  },
+  {
+    path: '/search/:kw',
+    component: SearchResult,
+    name: 'SearchResult'
+  },
+  {
+    path: '/article_detail',
+    component: ArticleDetail,
+    name: 'ArticleDetail'
   }
+
 ]
 
 const router = new VueRouter({

@@ -7,7 +7,7 @@ import {
   NavBar, Form, Field, Button, Tabbar,
   TabbarItem, Icon, Tab, Tabs,
   Cell, List, PullRefresh, ActionSheet, Popup,
-  Row, Col, Badge, Search
+  Row, Col, Badge, Search, Divider
 } from 'vant'
 
 Vue.use(NavBar)
@@ -28,6 +28,7 @@ Vue.use(Badge)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Search)
+Vue.use(Divider)
 Vue.config.productionTip = false
 
 new Vue({

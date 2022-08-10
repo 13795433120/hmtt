@@ -62,9 +62,63 @@ export const reportArticleAPI = (id, type, content) => request({
   }
 })
 
+export const getArticleDetailAPI = (artid) => request({
+  url: `/v1_0/articles/${artid}`
+})
+
+export const followArticleAuthorAPI = (autid) => request({
+  url: '/v1_0/user/followings',
+  methods: 'POST',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  },
+  data: {
+    target: autid
+  }
+})
+
+export const cancelFollowArticleAuthorAPI = (target) => request({
+  // eslint-disable-next-line camelcase
+  url: `/v1_0/user/followings/${target}`,
+  methods: 'DELETE',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
+})
+
+export const thumbUpArticleAPI = (artid) => request({
+  url: '/v1_0/article/likings',
+  methods: 'POST',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  },
+  data: {
+    target: artid
+  }
+})
+
+export const cancelThumbUpArticleAPI = (target) => request({
+  // eslint-disable-next-line camelcase
+  url: `/v1_0/article/likings/${target}`,
+  methods: 'DELETE',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
+})
+
 export const getSearchSuggestionAPI = (q) => request({
   url: '/v1_0/suggestion',
   params: {
+    q
+  }
+})
+
+// eslint-disable-next-line camelcase
+export const getSearchResultAPI = ({ page = 1, per_page = 10, q }) => request({
+  url: '/v1_0/search',
+  params: {
+    page,
+    per_page,
     q
   }
 })

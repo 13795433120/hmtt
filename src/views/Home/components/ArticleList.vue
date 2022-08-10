@@ -15,6 +15,7 @@
           :artItem="item"
           @dislike="dislikeArticle"
           @report="reportArticle"
+          @click.native="getArticleDetail(item)"
         ></ArticleItem>
       </van-list>
     </van-pull-refresh>
@@ -23,7 +24,7 @@
 
 <script>
 import { getArticleListAPI, dislikeArticleAPI, reportArticleAPI } from '@/api'
-import ArticleItem from './ArticleItem.vue'
+import ArticleItem from '@/components/ArticleItem.vue'
 export default {
   name: 'ArticleList',
   components: {
@@ -84,6 +85,14 @@ export default {
     async reportArticle (id, type) {
       const res = await reportArticleAPI(id, type)
       console.log(res)
+    },
+    getArticleDetail (articleObj) {
+      this.$router.push({
+        name: 'ArticleDetail',
+        query: {
+          aid: articleObj.art_id
+        }
+      })
     }
   }
 }
