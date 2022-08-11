@@ -7,7 +7,8 @@ import {
   NavBar, Form, Field, Button, Tabbar,
   TabbarItem, Icon, Tab, Tabs,
   Cell, List, PullRefresh, ActionSheet, Popup,
-  Row, Col, Badge, Search, Divider
+  Row, Col, Badge, Search, Divider,
+  CellGroup, Tag, Image as VanImage, Dialog
 } from 'vant'
 
 Vue.use(NavBar)
@@ -29,6 +30,10 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Search)
 Vue.use(Divider)
+Vue.use(CellGroup)
+Vue.use(Tag)
+Vue.use(VanImage)
+Vue.use(Dialog)
 Vue.config.productionTip = false
 
 new Vue({
