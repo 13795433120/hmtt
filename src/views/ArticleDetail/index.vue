@@ -6,29 +6,17 @@
     <!-- 文章信息区域 -->
     <div class="article-container">
       <!-- 文章标题 -->
-      <h1 class="art-title">{{artObj.title}}</h1>
+      <h1 class="art-title">{{article.title}}</h1>
 
       <!-- 用户信息 -->
-      <van-cell center :title="artObj.aut_name" :label="FormDate(artObj.pubdate)">
+      <van-cell center :title="article.aut_name" :label="formDate(article.pubdate)">
         <template #icon>
-          <img :src="artObj.aut_photo" alt="" class="avatar">
+          <img :src="article.aut_photo" alt="" class="avatar">
         </template>
         <template #default>
           <div>
-            <van-button
-              type="info"
-              size="mini"
-              v-if="artObj.is_followed"
-              @click="changeFollowState(true)"
-            >已关注</van-button>
-            <van-button
-              icon="plus"
-              type="info"
-              size="mini"
-              plain
-              v-else
-              @click="changeFollowState(false)"
-            >关注</van-button>
+            <van-button type="info" size="mini" v-if="article.is_followed" @click="followFn(true)">已关注</van-button>
+            <van-button icon="plus" type="info" size="mini" plain v-else @click="followFn(false)">关注</van-button>
           </div>
         </template>
       </van-cell>
@@ -37,72 +25,59 @@
       <van-divider></van-divider>
 
       <!-- 文章内容 -->
-      <div class="art-content" v-html="artObj.content"></div>
+      <div class="art-content" v-html="article.content"></div>
 
       <!-- 分割线 -->
       <van-divider>End</van-divider>
 
       <!-- 点赞 -->
       <div class="like-box">
-        <van-button
-          icon="good-job"
-          type="danger"
-          size="small"
-          v-if="artObj.attitude === 1"
-          @click="changeThumbState(true)"
-        >已点赞</van-button>
-        <van-button
-          icon="good-job-o"
-          type="danger"
-          plain
-          size="small"
-          v-else
-          @click="changeThumbState(true)"
-        >点赞</van-button>
+        <van-button icon="good-job" type="danger" size="small" v-if="article.attitude === 1" @click="judgeAPI(true)">已点赞</van-button>
+        <van-button icon="good-job-o" type="danger" plain size="small" v-else @click="judgeAPI(false)">点赞</van-button>
       </div>
     </div>
+    <CommentList></CommentList>
   </div>
 </template>
 
 <script>
-import {
-  getArticleDetailAPI,
-  followArticleAuthorAPI,
-  cancelFollowArticleAuthorAPI,
-  thumbUpArticleAPI,
-  cancelThumbUpArticleAPI
-} from '@/api'
+import CommentList from './CommentList.vue'
+import { getArticleDetailAPI, cancelFollowAPI, followAPI, judgeNocareAPI, judgeCareAPI } from '@/api'
 import { timeAgo } from '@/utils/date'
 export default {
   name: 'ArticleDetail',
+  components: {
+    CommentList
+  },
   data () {
     return {
-      artObj: {}
+      article: {}
     }
   },
   async created () {
     const res = await getArticleDetailAPI(this.$route.query.aid)
     console.log(res)
-    this.artObj = res.data.data
+    this.article = res.data.data
   },
   methods: {
-    FormDate: timeAgo,
-    changFollowState (state) {
+    formDate: timeAgo,
+    followFn (state) {
       if (state) {
-        this.artObj.is_followed = false
-        cancelFollowArticleAuthorAPI(this.artObj.aut_id)
+        // 取关
+        this.article.is_followed = false
+        cancelFollowAPI(this.article.aut_id)
       } else {
-        this.artObj.is_followed = true
-        followArticleAuthorAPI(this.artObj.aut_id)
+        this.article.is_followed = true
+        followAPI(this.article.aut_id)
       }
     },
-    changeThumbState (state) {
+    judgeAPI (state) {
       if (state) {
-        this.artObj.attitude = 0
-        cancelThumbUpArticleAPI(this.artObj.art_id)
+        this.article.attitude = 0
+        judgeNocareAPI(this.article.art_id)
       } else {
-        this.artObj.attitude = 1
-        thumbUpArticleAPI(this.artObj.art_id)
+        this.article.attitude = 1
+        judgeCareAPI(this.article.art_id)
       }
     }
   }
@@ -130,8 +105,8 @@ export default {
       width: 100%;
     }
     /deep/ pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
+        white-space: pre-wrap;
+        word-wrap: break-word;
     }
 }
 

@@ -66,27 +66,34 @@ export const getArticleDetailAPI = (artid) => request({
   url: `/v1_0/articles/${artid}`
 })
 
-export const followAuthorAPI = (id) => request({
-  url: '/v1_0/user/followings',
-  method: 'POST',
-  headers: {
-    Authorization: `Bearer ${getToken()}`
-  },
-  data: {
-    target: id
-  }
-})
-
-export const cancelFollowArticleAuthorAPI = (target) => request({
-  // eslint-disable-next-line camelcase
-  url: `/v1_0/user/followings/${target}`,
+export const cancelFollowAPI = (autid) => request({
+  url: `/v1_0/user/followings/${autid}`,
   method: 'DELETE',
   headers: {
     Authorization: `Bearer ${getToken()}`
   }
 })
 
-export const thumbUpArticleAPI = (artid) => request({
+export const followAPI = (autid) => request({
+  url: '/v1_0/user/followings',
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  },
+  data: {
+    target: autid
+  }
+})
+
+export const judgeNocareAPI = (artid) => request({
+  url: `/v1_0/article/likings/${artid}`,
+  method: 'DELETE',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  }
+})
+
+export const judgeCareAPI = (artid) => request({
   url: '/v1_0/article/likings',
   method: 'POST',
   headers: {
@@ -97,13 +104,42 @@ export const thumbUpArticleAPI = (artid) => request({
   }
 })
 
-export const cancelThumbUpArticleAPI = (target) => request({
-  // eslint-disable-next-line camelcase
-  url: `/v1_0/article/likings/${target}`,
+export const getCommentsAPI = ({ type, source, offset, limit }) => request({
+  url: '/v1_0/comments',
+  params: {
+    type,
+    source,
+    offset,
+    limit
+  }
+})
+
+export const commentLikeAPI = (comid) => request({
+  url: '/v1_0/comment/likings',
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  },
+  data: {
+    target: comid
+  }
+})
+
+export const commentDislikeAPI = (comid) => request({
+  url: `/v1_0/comment/likings/${comid}`,
   method: 'DELETE',
   headers: {
     Authorization: `Bearer ${getToken()}`
   }
+})
+
+export const addContentAPI = (contentObj) => request({
+  url: '/v1_0/comments',
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${getToken()}`
+  },
+  data: contentObj
 })
 
 export const getSearchSuggestionAPI = (q) => request({

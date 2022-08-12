@@ -8,7 +8,8 @@ import {
   TabbarItem, Icon, Tab, Tabs,
   Cell, List, PullRefresh, ActionSheet, Popup,
   Row, Col, Badge, Search, Divider,
-  CellGroup, Tag, Image as VanImage, Dialog
+  CellGroup, Tag, Image as VanImage, Dialog,
+  DatetimePicker
 } from 'vant'
 
 Vue.use(NavBar)
@@ -34,6 +35,7 @@ Vue.use(CellGroup)
 Vue.use(Tag)
 Vue.use(VanImage)
 Vue.use(Dialog)
+Vue.use(DatetimePicker)
 Vue.config.productionTip = false
 
 new Vue({
